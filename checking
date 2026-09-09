@@ -1,0 +1,8 @@
+from pymavlink import mavutil
+m = mavutil.mavlink_connection('udp:127.0.0.1:14550')
+m.wait_heartbeat()
+print('heartbeat ok, requesting stream')
+m.mav.request_data_stream_send(m.target_system, m.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, 4, 1)
+msg = m.recv_match(type='GLOBAL_POSITION_INT', blocking=True, timeout=5)
+print(msg)
+
